@@ -1,6 +1,5 @@
 package org.nlp4han.coref.hobbs;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -8,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
 
-import org.nlp4han.coref.hobbs.Hobbs;
 import org.nlp4han.coref.hobbs.Hobbs;
 
 import com.lc.nlp4han.constituent.BracketExpUtil;
@@ -34,7 +32,8 @@ public class TestHobbs {
 	TreeNode pronoun =  s2.getChild(0).getChild(1).getChild(2).getChild(1).getChild(0);
 	TreeNode goal = BracketExpUtil.generateTree("(NP(DNP(NP(NN 小明))(DEG 的))(NP(NN 妈妈)))");
 	
-	AttributeFilter attributeFilter = null;
+	AttributeFilter attributeFilter = new AttributeFilter(new NodeNameFilter());	//组合过滤器
+	attributeFilter.setAttributeGenerator(null);	//装入属性生成器
 	Hobbs hobbs = new Hobbs(attributeFilter);
 	TreeNode result = hobbs.hobbs(constituentTrees, pronoun);
 	assertEquals(goal, result);
@@ -57,7 +56,8 @@ public class TestHobbs {
 	TreeNode pronoun =  s2.getChild(0).getChild(1).getChild(1).getChild(1).getChild(0);
 	TreeNode goal = BracketExpUtil.generateTree("(NP(DNP(NP(NN 小明))(DEG 的))(NP(NN 妈妈)))");
 	
-	AttributeFilter attributeFilter = null;
+	AttributeFilter attributeFilter = new AttributeFilter(new NodeNameFilter());	//组合过滤器
+	attributeFilter.setAttributeGenerator(null);	//装入属性生成器
 	Hobbs hobbs = new Hobbs(attributeFilter);
 	TreeNode result = hobbs.hobbs(constituentTrees, pronoun);
 	assertNotEquals(goal, result);
