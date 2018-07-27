@@ -11,8 +11,7 @@ import com.lc.nlp4han.constituent.TreeNode;
  */
 public class Hobbs
 {
-	
-	
+
 	private Filter filter;
 
 	public Hobbs(Filter filter)
@@ -24,29 +23,36 @@ public class Hobbs
 	{
 		TreeNode x;
 		Path path = new Path();
-		
+
 		TreeNode tmp;
 		List<TreeNode> candidateNodes;
 		int index = constituentTrees.size() - 1;
 
 		tmp = getFirstNPNodeUp(pronoun);
 		x = getFirstNPNodeUp(tmp);
-		path.getPath(x, tmp);
-		candidateNodes = getNPNodeOnLeftOfPath(x, path);
-		filter.setUp(candidateNodes);
-		filter.filtering();
-
-		if (!candidateNodes.isEmpty())
-		{ // 若存在NP结点，并且在x和该候选结点间存在NP或IP结点，则返回该结点
-			candidateNodes = existNpOrIPNodeBetween2Nodes(candidateNodes, x);
-			if (!candidateNodes.isEmpty())
-				return candidateNodes.get(0);
-		}
-		while (index > 0)
+		if (x != null)
 		{
-			if (x.getParent() == null)
+			path.getPath(x, tmp);
+			candidateNodes = getNPNodeOnLeftOfPath(x, path);
+			filter.setUp(candidateNodes);
+			filter.filtering();
+
+			if (!candidateNodes.isEmpty())
+			{ // 若存在NP结点，并且在x和该候选结点间存在NP或IP结点，则返回该结点
+				candidateNodes = existNpOrIPNodeBetween2Nodes(candidateNodes, x);
+				if (!candidateNodes.isEmpty())
+					return candidateNodes.get(0);
+			}
+		}
+		else
+			x = tmp;
+		while (index >= 0)
+		{
+			if (x == null || x.getParent() == null)
 			{// 若结点x为最顶层IP结点，则在最近的前树中查找候选结点
 				index--;
+				if (index < 0)
+					break;
 				x = constituentTrees.get(index);
 				candidateNodes = getNPNodes(x);
 				filter.setUp(candidateNodes);
@@ -83,6 +89,7 @@ public class Hobbs
 
 	/**
 	 * 在根结点rootNode下，路径path右侧，从左至右，广度优先搜索NP结点。但不遍历低于任何遇到的NP或IP结点的分支。
+	 * 
 	 * @param rootNode
 	 * @param path
 	 * @return
@@ -90,14 +97,16 @@ public class Hobbs
 	private List<TreeNode> getNPNodeOnRightOfPath(TreeNode rootNode, Path path)
 	{
 		List<TreeNode> result = new LinkedList<TreeNode>();
-		List<TreeNode> candidates = TreeNodeUtil.getNodesWithSpecifiedNameOnLeftOrRightOfPath(rootNode, path, "right", new String[] {"NP"});
+		List<TreeNode> candidates = TreeNodeUtil.getNodesWithSpecifiedNameOnLeftOrRightOfPath(rootNode, path, "right",
+				new String[] { "NP" });
 		boolean flag = false;
-		for (TreeNode treeNode: candidates)
+		for (TreeNode treeNode : candidates)
 		{
-			List<TreeNode> tmp = TreeNodeUtil.getNodesUpWithSpecifiedName(treeNode, new String[] {"NP"});
-			for (int i=0 ; i<tmp.size() ; i++)
+			List<TreeNode> tmp = TreeNodeUtil.getNodesUpWithSpecifiedName(treeNode, new String[] { "NP" });
+			for (int i = 0; i < tmp.size(); i++)
 			{
-				if (TreeNodeUtil.isNodeWithSpecifiedName(tmp.get(i), new String[] {"NP", "IP"}) && tmp.get(i).getParent() != null)
+				if (TreeNodeUtil.isNodeWithSpecifiedName(tmp.get(i), new String[] { "NP", "IP" })
+						&& tmp.get(i).getParent() != null)
 				{
 					flag = true;
 					break;
@@ -115,28 +124,32 @@ public class Hobbs
 
 	/**
 	 * 获得根节点rootNode下的所有NP结点
-	 * @param rootNode 根结点
+	 * 
+	 * @param rootNode
+	 *            根结点
 	 * @return 根节点rootNode下的所有NP结点
 	 */
 	private List<TreeNode> getNPNodes(TreeNode rootNode)
 	{
-		return TreeNodeUtil.getNodesWithSpecified(rootNode, new String[] {"NP"});
+		return TreeNodeUtil.getNodesWithSpecified(rootNode, new String[] { "NP" });
 	}
 
 	/**
 	 * 获得candidateNodes中与结点treeNode间存在NP或IP结点的结点
-	 * @param candidateNodes 
+	 * 
+	 * @param candidateNodes
 	 * @param treeNode
 	 * @return
 	 */
 	private List<TreeNode> existNpOrIPNodeBetween2Nodes(List<TreeNode> candidateNodes, TreeNode treeNode)
 	{
 		List<TreeNode> result = new LinkedList<TreeNode>();
-		for (int i=0 ; i<candidateNodes.size() ; i++)
+		for (int i = 0; i < candidateNodes.size(); i++)
 		{
 			TreeNode tmp;
 			tmp = candidateNodes.get(i);
-			if (TreeNodeUtil.getNodesWithSpecifiedNameBetween2Nodes(tmp, treeNode, new String[] {"NP", "IP"}).size() > 0)
+			if (TreeNodeUtil.getNodesWithSpecifiedNameBetween2Nodes(tmp, treeNode, new String[] { "NP", "IP" })
+					.size() > 0)
 			{
 				result.add(tmp);
 			}
@@ -144,16 +157,17 @@ public class Hobbs
 		return result;
 	}
 
-	
 	/**
 	 * 根结点rootNode下，路径path左侧，从左至右，广度优先遍历得到的所有NP结点
+	 * 
 	 * @param rootNode
 	 * @param path
 	 * @return
 	 */
 	private List<TreeNode> getNPNodeOnLeftOfPath(TreeNode rootNode, Path path)
 	{
-		List<TreeNode> result = TreeNodeUtil.getNodesWithSpecifiedNameOnLeftOrRightOfPath(rootNode, path, "Left", new String[] {"NP"});
+		List<TreeNode> result = TreeNodeUtil.getNodesWithSpecifiedNameOnLeftOrRightOfPath(rootNode, path, "Left",
+				new String[] { "NP" });
 		return result;
 	}
 
@@ -166,8 +180,8 @@ public class Hobbs
 	 */
 	private boolean dominateNNode(TreeNode treeNode, Path path)
 	{
-		List<TreeNode> candidates = TreeNodeUtil.getChildNodeWithSpecifiedName(treeNode, new String[] {"NP"});
-		for (TreeNode tn: candidates)
+		List<TreeNode> candidates = TreeNodeUtil.getChildNodeWithSpecifiedName(treeNode, new String[] { "NP" });
+		for (TreeNode tn : candidates)
 		{
 			if (path.contains(tn))
 				return true;
@@ -221,5 +235,5 @@ public class Hobbs
 	{
 		return TreeNodeUtil.getFirstNodeUpWithSpecifiedName(treeNode, "NP");
 	}
-	
+
 }

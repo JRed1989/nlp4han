@@ -17,7 +17,7 @@ public class Path
 {
 	private List<TreeNode> path;
 	private Direction dir = Direction.NONE;
-	
+
 	public enum Direction
 	{
 		UP, DOWN, NONE;
@@ -47,12 +47,12 @@ public class Path
 	{
 		return path;
 	}
-	
+
 	public boolean contains(TreeNode treeNode)
 	{
 		return this.path.contains(treeNode);
 	}
-	
+
 	public int indexOf(TreeNode treeNode)
 	{
 		return this.path.indexOf(treeNode);
@@ -77,7 +77,7 @@ public class Path
 	{
 		return path.size();
 	}
-	
+
 	public void addPathNode(int index, TreeNode treeNode)
 	{
 		path.add(index, treeNode);
@@ -98,8 +98,7 @@ public class Path
 		this.path.clear();
 		if (dir != Direction.NONE)
 		{
-			
-			
+
 			TreeNode tmp;
 			if (dir == Direction.UP)
 			{
@@ -111,7 +110,7 @@ public class Path
 					tmp = tmp.getParent();
 				}
 				this.addPathNode(tmp);
-			} 
+			}
 			else if (dir == Direction.DOWN)
 			{
 				this.addPathNode(endNode);
@@ -122,13 +121,13 @@ public class Path
 					tmp = tmp.getParent();
 				}
 				this.addPathNode(0, tmp);
-				
+
 			}
 		}
-		
+
 	}
-	
-	public static Direction getDirection(TreeNode startNode, TreeNode endNode) 
+
+	public static Direction getDirection(TreeNode startNode, TreeNode endNode)
 	{
 		if (startNode != null && endNode != null)
 		{
@@ -141,7 +140,7 @@ public class Path
 				}
 				tmp = tmp.getParent();
 			}
-			
+
 			tmp = endNode.getParent();
 			while (tmp != null)
 			{
@@ -150,14 +149,15 @@ public class Path
 					return Direction.DOWN;
 				}
 				tmp = tmp.getParent();
-			} 
-			
+			}
+
 		}
 		return Direction.NONE;
 	}
-	
+
 	/**
 	 * 获得结点treeNode在路径中的孩子结点
+	 * 
 	 * @param treeNode
 	 * @return
 	 */
@@ -169,8 +169,8 @@ public class Path
 			int index;
 			if (dir == Direction.DOWN)
 			{
-				index = path.indexOf(treeNode)+1;
-				if (index > 0 && index < path.size())
+				index = path.indexOf(treeNode) + 1;
+				if (index >= 0 && index < path.size())
 				{
 					result = path.get(index);
 					return result;
@@ -178,8 +178,8 @@ public class Path
 			}
 			else if (dir == Direction.UP)
 			{
-				index = path.indexOf(treeNode)-1;
-				if (index > 0 && index < path.size())
+				index = path.indexOf(treeNode) - 1;
+				if (index >= 0 && index < path.size())
 				{
 					result = path.get(index);
 					return result;
@@ -189,7 +189,7 @@ public class Path
 			{
 				return null;
 			}
-			
+
 		}
 		return null;
 	}

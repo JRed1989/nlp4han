@@ -2,6 +2,11 @@ package org.nlp4han.coref.hobbs;
 
 import java.util.List;
 
+import org.nlp4han.coref.hobbs.MentionAttribute.Animacy;
+import org.nlp4han.coref.hobbs.MentionAttribute.Gender;
+import org.nlp4han.coref.hobbs.MentionAttribute.Number;
+import org.nlp4han.coref.hobbs.MentionAttribute.Person;
+
 import com.lc.nlp4han.constituent.TreeNode;
 
 /**
@@ -58,8 +63,19 @@ public class AttributeFilter extends Filtering
 	 */
 	public boolean isMatched(MentionAttribute attribute1, MentionAttribute attribute2)
 	{
-		// TODO : 需完成属性的匹配规则，如性别、数量、动物性、人等
-		return false;
+		if ((attribute1.getGen().equals(Gender.FEMALE) && attribute2.getGen().equals(Gender.MALE))
+				|| (attribute1.getGen().equals(Gender.MALE) && attribute2.getGen().equals(Gender.FEMALE)))
+			return false;
+		if ((attribute1.getNum().equals(Number.PLURAL) && attribute2.getNum().equals(Number.SINGULAR))
+				|| (attribute2.getNum().equals(Number.PLURAL) && attribute1.getNum().equals(Number.SINGULAR)))
+			return false;
+		if ((attribute1.getAni().equals(Animacy.TRUE) && attribute2.getAni().equals(Animacy.FALSE))
+				|| (attribute2.getAni().equals(Animacy.TRUE) && attribute1.getAni().equals(Animacy.FALSE)))
+			return false;
+		if ((attribute1.getPer().equals(Person.TRUE) && attribute2.getPer().equals(Person.FALSE))
+				|| (attribute2.getPer().equals(Person.TRUE) && attribute1.getPer().equals(Person.FALSE)))
+			return false;
+		return true;
 	}
 
 	@Override

@@ -7,5 +7,6 @@ import com.lc.nlp4han.constituent.TreeNode;
 public interface Filter
 {
 	public List<TreeNode> filtering();
+
 	public void setUp(List<TreeNode> treeNodes);
 }

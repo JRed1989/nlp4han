@@ -2,8 +2,6 @@ package org.nlp4han.coref.hobbs;
 
 import java.util.*;
 
-import org.nlp4han.coref.hobbs.Path.Direction;
-
 import com.lc.nlp4han.constituent.TreeNode;
 
 /**
@@ -12,6 +10,11 @@ import com.lc.nlp4han.constituent.TreeNode;
  */
 public class TreeNodeUtil
 {
+	private final static String[] POSTAGS = { "AD", "AS", "BA", "CC", "CD", "CS", "DEC", "DEG", "DER", "DEV", "DT",
+			"ETC", "FW", "IJ", "JJ", "LB", "LC", "M", "MSP", "NN", "NR", "NT", "OD", "ON", "P", "PN", "PU", "SB", "SP",
+			"VA", "VC", "VE", "VV" };
+	private final static String[] TAGSFORPHRASE = { "ADJP", "ADVP", "CLP", "CP", "DNP", "DP", "DVP", "FRAG", "IP",
+			"LCP", "LST", "NP", "PP", "PRN", "QP", "UCP", "VP" };
 
 	/**
 	 * 至结点treeNode向上搜索，返回第一个结点名为treeNodeName的结点；若treeNodeName为null，则返回treeNode的父节点
@@ -44,9 +47,10 @@ public class TreeNodeUtil
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 至结点treeNode向上搜索，返回的结点名在treeNodeNames中的所有结点；若treeNodeNames为null，则返回treeNode的父节点
+	 * 
 	 * @param treeNode
 	 * @param treeNodeNames
 	 * @return
@@ -64,7 +68,7 @@ public class TreeNodeUtil
 				result.add(tmp);
 			tmp = tmp.getParent();
 		}
-		
+
 		return result;
 	}
 
@@ -86,7 +90,7 @@ public class TreeNodeUtil
 		if (candidates != null && !candidates.isEmpty())
 		{
 			List<TreeNode> result = new LinkedList<TreeNode>();
-			for (int i=0; i<candidates.size() ; i++)
+			for (int i = 0; i < candidates.size(); i++)
 			{
 				TreeNode tmp = candidates.get(i);
 				if (tmp != ancestorNode)
@@ -166,21 +170,27 @@ public class TreeNodeUtil
 		}
 		return null;
 	}
-	
+
 	public static List<TreeNode> getNodesWithSpecified(TreeNode treeNode, String[] treeNodeNames)
 	{
 		return getNodesWithSpecifiedNameOnLeftOrRightOfPath(treeNode, null, null, treeNodeNames);
 	}
-	
+
 	/**
 	 * 在根节点rootNode下，从左至右，广度优先搜索路径path的左侧或右侧的结点，返回结点名符合treeNodeNames的所有结点
-	 * @param rootNode 根节点
-	 * @param path 路径
-	 * @param leftOrRight 路径的左侧或右侧，该变量取值为"left"、"right"
-	 * @param treeNodeNames 指定结点名
+	 * 
+	 * @param rootNode
+	 *            根节点
+	 * @param path
+	 *            路径
+	 * @param leftOrRight
+	 *            路径的左侧或右侧，该变量取值为"left"、"right"
+	 * @param treeNodeNames
+	 *            指定结点名
 	 * @return 返回符合要求的结点
 	 */
-	public static List<TreeNode> getNodesWithSpecifiedNameOnLeftOrRightOfPath(TreeNode rootNode, Path path, String leftOrRight, String[] treeNodeNames)
+	public static List<TreeNode> getNodesWithSpecifiedNameOnLeftOrRightOfPath(TreeNode rootNode, Path path,
+			String leftOrRight, String[] treeNodeNames)
 	{
 		List<TreeNode> result = new ArrayList<TreeNode>();
 		List<TreeNode> buffer = new LinkedList<TreeNode>();
@@ -191,7 +201,7 @@ public class TreeNodeUtil
 			{
 				throw new RuntimeException("参数错误：无路径，但有路径方向！");
 			}
-			if (!path.contains(rootNode)) // 路径path的最后的结点，一定是被查找子树的根结点
+			if (!path.contains(rootNode)) // rootNode必须在path中
 			{
 				throw new RuntimeException("路径不对");
 			}
@@ -202,7 +212,7 @@ public class TreeNodeUtil
 		collectNodesWithSpecifiedName(buffer, result, path, treeNodeNames, leftOrRight);
 		return result;
 	}
-	
+
 	private static void processNodeOnPath(TreeNode treeNode, List<TreeNode> buffer, Path path, String leftOrRight)
 	{
 		if (path == null && leftOrRight == null)
@@ -229,17 +239,16 @@ public class TreeNodeUtil
 			TreeNode chileNodeOfRootInPath = path.getChileNodeInPath(treeNode);
 			if (chileNodeOfRootInPath != null)
 			{
-				for (int i = treeNode.getChildren().indexOf(chileNodeOfRootInPath); i < treeNode
-						.getChildrenNum(); i++)
+				for (int i = treeNode.getChildren().indexOf(chileNodeOfRootInPath); i < treeNode.getChildrenNum(); i++)
 				{
 					buffer.add(treeNode.getChild(i));
 				}
 			}
 		}
 	}
-	
-	
-	private static void collectNodesWithSpecifiedName(List<TreeNode> buffer, List<TreeNode> result, Path path, String[] treeNodeNames, String leftOrRight)
+
+	private static void collectNodesWithSpecifiedName(List<TreeNode> buffer, List<TreeNode> result, Path path,
+			String[] treeNodeNames, String leftOrRight)
 	{
 		TreeNode searchedNode;
 		while (buffer.size() > 0)
@@ -252,7 +261,7 @@ public class TreeNodeUtil
 					result.add(searchedNode);
 				}
 			}
-			
+
 			if (path != null && path.contains(searchedNode))
 			{
 				processNodeOnPath(searchedNode, buffer, path, leftOrRight);
@@ -267,6 +276,195 @@ public class TreeNodeUtil
 				}
 			}
 		}
+	}
+
+	/**
+	 * 获取NP结点的中心词
+	 * 
+	 * @param nPNode
+	 * @return
+	 */
+	public static TreeNode getHead(TreeNode nPNode)
+	{
+		if (nPNode == null || !nPNode.getNodeName().equals("NP"))
+		{
+			throw new RuntimeException("NPNode错误！");
+		}
+
+		TreeNode result = nPNode;
+
+		if (nPNode.getChildrenNum() > 1)
+		{
+			List<TreeNode> childrenNodes = (List<TreeNode>) nPNode.getChildren();
+
+			if (isParataxisNP(result))
+				return result;
+			if (allNodeNames(childrenNodes, POSTAGS))
+			{
+				if (allNodeNames(childrenNodes, new String[] { "NN", "NR" }) || childrenNodes.size() < 4)
+				{
+					return result;
+				}
+			}
+			else if (hasNodeName(childrenNodes, "NP"))
+			{
+				result = getLastNodeWithSpecifiedName(childrenNodes, new String[] { "NP" });
+				result = getHead(result);
+				return result;
+			}
+			else
+			{
+				result = getLastNodeWithSpecifiedName(childrenNodes, new String[] { "NN", "NR" });
+				return result;
+			}
+
+		}
+		return result;
+	}
+	
+	public static boolean isParataxisNP(TreeNode treeNode)
+	{
+		if (treeNode == null || !treeNode.getNodeName().equals("NP"))
+		{
+			throw new RuntimeException("NPNode错误！");
+		}
+		List<TreeNode> childrenNodes = (List<TreeNode>) treeNode.getChildren();
+
+		
+		if (allNodeNames(childrenNodes, new String[] { "NN", "NR", "CC", "PU", "NP" }))
+		{
+			List<TreeNode> pus = getNodesWithSpecified(treeNode, new String[] { "、" });
+			List<TreeNode> ccs = getNodesWithSpecified(treeNode, new String[] { "CC" });
+			int num = pus.size() + ccs.size();
+			if (num >= childrenNodes.size()*0.3)
+				return true;
+		}
+		
+		return false;
+		
+	}
+
+	/**
+	 * treeNodes中所有结点的结点名是否都在nodeNames中
+	 * 
+	 * @param treeNodes
+	 *            所有结点
+	 * @param nodeNames
+	 *            所有结点名
+	 * @return 若treeNodes中所有结点的结点名都在nodeNames中，则返回true；否则，返回false
+	 */
+	public static boolean allNodeNames(List<TreeNode> treeNodes, String[] nodeNames)
+	{
+		if (treeNodes == null || nodeNames == null)
+		{
+			throw new RuntimeException("输入错误！");
+		}
+		boolean flag = true;
+		for (TreeNode treeNode : treeNodes)
+		{
+			if (!isNodeWithSpecifiedName(treeNode, nodeNames))
+			{
+				flag = false;
+				break;
+			}
+		}
+		return flag;
+	}
+
+	/**
+	 * treeNodes中是否至少存在一个结点的结点名为nodeName的值
+	 * 
+	 * @param treeNodes
+	 * @param nodeName
+	 * @return
+	 */
+	public static boolean hasNodeName(List<TreeNode> treeNodes, String nodeName)
+	{
+		if (treeNodes == null || nodeName == null)
+		{
+			throw new RuntimeException("输入错误！");
+		}
+		for (TreeNode treeNode : treeNodes)
+		{
+			if (treeNode.getNodeName().equals(nodeName))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 获取treeNodes中，结点名在nodesNames中的最后一个结点
+	 * 
+	 * @param treeNodes
+	 * @param nodeNames
+	 * @return
+	 */
+	public static TreeNode getLastNodeWithSpecifiedName(List<TreeNode> treeNodes, String[] nodeNames)
+	{
+		TreeNode result;
+		for (int i = treeNodes.size() - 1; i >= 0; i--)
+		{
+			result = treeNodes.get(i);
+			if (isNodeWithSpecifiedName(result, nodeNames))
+			{
+				return result;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 获得根节点rootNode下，所有终止符组成的字符串
+	 * 
+	 * @param rootNode
+	 * @return
+	 */
+	public static String getString(TreeNode rootNode)
+	{
+		StringBuilder result = new StringBuilder();
+		List<TreeNode> LeafNodes = getAllLeafNodes(rootNode);
+		for (TreeNode node : LeafNodes)
+		{
+			result.append(node.getNodeName());
+		}
+		return result.toString();
+	}
+
+	/**
+	 * 获得根结点rootNode下，所有的叶子结点
+	 * 
+	 * @param rootNode
+	 * @return
+	 */
+	public static List<TreeNode> getAllLeafNodes(TreeNode rootNode)
+	{
+		if (rootNode == null)
+		{
+			throw new RuntimeException("输入错误！");
+		}
+		List<TreeNode> buffer = new LinkedList<TreeNode>();
+		List<TreeNode> result = new ArrayList<TreeNode>();
+		buffer.add(rootNode);
+
+		while (!buffer.isEmpty())
+		{
+			TreeNode tmp = buffer.remove(buffer.size() - 1);
+
+			if (tmp.getChildrenNum() == 0)
+			{
+				result.add(tmp);
+			}
+			else
+			{
+				for (int i = tmp.getChildrenNum() - 1; i >= 0; i--)
+				{
+					buffer.add(tmp.getChild(i));
+				}
+			}
+		}
+		return result;
 	}
 
 }
