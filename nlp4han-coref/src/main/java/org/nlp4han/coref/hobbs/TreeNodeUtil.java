@@ -301,20 +301,21 @@ public class TreeNodeUtil
 				return result;
 			if (allNodeNames(childrenNodes, POSTAGS))
 			{
-				if (allNodeNames(childrenNodes, new String[] { "NN", "NR" }) || childrenNodes.size() < 4)
+				if (allNodeNames(childrenNodes, new String[] { "NN", "NR" }) && childrenNodes.size() < 3)
 				{
 					return result;
 				}
-			}
-			else if (hasNodeName(childrenNodes, "NP"))
-			{
-				result = getLastNodeWithSpecifiedName(childrenNodes, new String[] { "NP" });
-				result = getHead(result);
-				return result;
+				else
+				{
+					result = getLastNodeWithSpecifiedName(childrenNodes, new String[] { "NN", "NR" });
+					return result;
+				}
 			}
 			else
 			{
-				result = getLastNodeWithSpecifiedName(childrenNodes, new String[] { "NN", "NR" });
+				result = getLastNodeWithSpecifiedName(childrenNodes, new String[] { "NN", "NR", "NP"});
+				if (result.getNodeName().equals("NP"))
+					result = getHead(result);
 				return result;
 			}
 

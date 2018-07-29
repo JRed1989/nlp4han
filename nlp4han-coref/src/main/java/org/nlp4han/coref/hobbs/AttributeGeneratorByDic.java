@@ -3,8 +3,11 @@ package org.nlp4han.coref.hobbs;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -17,6 +20,7 @@ import com.lc.nlp4han.util.DictionaryLoader;
 
 public class AttributeGeneratorByDic implements AttributeGenerator
 {
+	private static Map<String, Properties> dictionaries = new HashMap<String, Properties>();
 
 	@Override
 	public MentionAttribute extractAttributes(TreeNode treeNode)
@@ -30,12 +34,17 @@ public class AttributeGeneratorByDic implements AttributeGenerator
 
 	public Properties loadProperties(String fileName, String encoding) throws IOException
 	{
-		Properties result = new Properties();
-		InputStream stream = AttributeGeneratorByDic.class.getClassLoader()
-				.getResourceAsStream(fileName);
-		result.load(new InputStreamReader(stream, encoding));
-
-		return result;
+		String key = fileName + encoding;
+		if (!dictionaries.containsKey(key))
+		{
+			Properties result = new Properties();
+			InputStream stream = AttributeGeneratorByDic.class.getClassLoader()
+					.getResourceAsStream(fileName);
+			result.load(new InputStreamReader(stream, encoding));
+			dictionaries.put(key, result);
+			return result;
+		}
+		return dictionaries.get(key);
 	}
 
 	/**

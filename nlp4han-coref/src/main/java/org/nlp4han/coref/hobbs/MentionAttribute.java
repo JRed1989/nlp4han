@@ -41,6 +41,8 @@ public class MentionAttribute
 		TRUE, FALSE, UNKNOWN;
 	}
 
+	
+
 	/**
 	 * 人： TRUE——动物；FALSE——非动物；UNKNOWN——不确定；
 	 */
@@ -92,6 +94,12 @@ public class MentionAttribute
 	public void setPer(Person per)
 	{
 		this.per = per;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "[gen=" + gen + ", num=" + num + ", ani=" + ani + ", per=" + per + "]";
 	}
 
 }
