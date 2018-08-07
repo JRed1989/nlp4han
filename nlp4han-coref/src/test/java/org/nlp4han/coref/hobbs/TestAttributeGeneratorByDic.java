@@ -3,7 +3,9 @@ package org.nlp4han.coref.hobbs;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -29,53 +31,63 @@ public class TestAttributeGeneratorByDic
 	public void testGetGender()
 	{
 		TreeNode treeNode = BracketExpUtil.generateTree("[(NP(DNP (NP (NN 小明))(DEG 的))(NP (NN 妈妈)))]");
-		Gender result = agbd.getGender(treeNode);
-		Gender goal = Gender.FEMALE;
+		Set<Gender> result = agbd.getGender(treeNode);
+		Set<Gender> goal = new HashSet<Gender>();
+		goal.add(Gender.FEMALE);
 		assertEquals(goal, result);
 		
 		TreeNode treeNode1 = BracketExpUtil.generateTree("[(NP (DNP (NP (NR 李明)) (DEG 的)) (NP (NN 弟弟)))]");
-		Gender result1 = agbd.getGender(treeNode1);
-		Gender goal1 = Gender.MALE;
+		Set<Gender> result1 = agbd.getGender(treeNode1);
+		Set<Gender> goal1 = new HashSet<Gender>();
+		goal1.add(Gender.MALE);
 		assertEquals(goal1, result1);
 		
 		TreeNode treeNode2 = BracketExpUtil.generateTree("[(NP(QP (CD 三)(CLP (M 个)))(NP (NN 文件)))]");
-		Gender result2 = agbd.getGender(treeNode2);
-		Gender goal2 = Gender.UNKNOWN;
+		Set<Gender> result2 = agbd.getGender(treeNode2);
+		Set<Gender> goal2 = new HashSet<Gender>();
+		System.out.println(result2);
+		goal2.add(Gender.NONE);
 		assertEquals(goal2, result2);
 		
 	}
+	
 	
 	@Test
 	public void testGetNumber()
 	{
 		TreeNode treeNode = BracketExpUtil.generateTree("[(NP(DNP (NP (NN 小明))(DEG 的))(NP (NN 妈妈)))]");
-		Number result = agbd.getNumber(treeNode);
-		Number goal = Number.UNKNOWN;
+		Set<Number> result = agbd.getNumber(treeNode);
+		Set<Number> goal = new HashSet<Number>();
 		assertEquals(goal, result);
 		
 		TreeNode treeNode2 = BracketExpUtil.generateTree("[(NP(QP (CD 三)(CLP (M 个)))(NP (NN 文件)))]");
-		Number result2 = agbd.getNumber(treeNode2);
-		Number goal2 = Number.PLURAL;
+		Set<Number> result2 = agbd.getNumber(treeNode2);
+		Set<Number> goal2 = new HashSet<Number>();
+		goal2.add(Number.PLURAL);
 		assertEquals(goal2, result2);
 		
 		TreeNode treeNode3 = BracketExpUtil.generateTree("[(NP(NP(DNP(NP(NR 张三))(DEG 的))(NP(NN 妈妈)))(PU 、)(NP(DNP(NP(ADJP(JJ 小))(NP(NN 明)))(DEG 的))(NP(NN 哥哥)))(CC 和)(NP(PN 我)))]");
-		Number result3 = agbd.getNumber(treeNode3);
-		Number goal3 = Number.PLURAL;
+		Set<Number> result3 = agbd.getNumber(treeNode3);
+		Set<Number> goal3 = new HashSet<Number>();
+		goal3.add(Number.PLURAL);
 		assertEquals(goal3, result3);
 		
 		TreeNode treeNode4 = BracketExpUtil.generateTree("[(NP(QP (CD 一) (CLP (M 条)))(NP (NN 狗)))]");
-		Number result4 = agbd.getNumber(treeNode4);
-		Number goal4 = Number.SINGULAR;
+		Set<Number> result4 = agbd.getNumber(treeNode4);
+		Set<Number> goal4 = new HashSet<Number>();
+		goal4.add(Number.SINGULAR);
 		assertEquals(goal4, result4);
 		
 		TreeNode treeNode5 = BracketExpUtil.generateTree("[(NP(DP (DT 这个)) (NP (NN 人)))]");
-		Number result5 = agbd.getNumber(treeNode5);
-		Number goal5 = Number.SINGULAR;
+		Set<Number> result5 = agbd.getNumber(treeNode5);
+		Set<Number> goal5 = new HashSet<Number>();
+		goal5.add(Number.SINGULAR);
 		assertEquals(goal5, result5);
 		
 		TreeNode treeNode6 = BracketExpUtil.generateTree("[(NP(DP (DT 那些)) (NP (NN 东西)))]");
-		Number result6 = agbd.getNumber(treeNode6);
-		Number goal6 = Number.PLURAL;
+		Set<Number> result6 = agbd.getNumber(treeNode6);
+		Set<Number> goal6 = new HashSet<Number>();
+		goal6.add(Number.PLURAL);
 		assertEquals(goal6, result6);
 	}
 	
@@ -83,18 +95,28 @@ public class TestAttributeGeneratorByDic
 	public void testGetAnimacy()
 	{
 		TreeNode treeNode = BracketExpUtil.generateTree("[(NP (QP (CD 一) (CLP (M 只))) (ADJP (JJ 大)) (NP (NN 狼狗)))]");
-		Animacy result = agbd.getAnimacy(treeNode);
-		Animacy goal = Animacy.TRUE;
+		Set<Animacy> result = agbd.getAnimacy(treeNode);
+		Set<Animacy> goal = new HashSet<Animacy>();
+		goal.add(Animacy.ANI_ANIMAL);
 		assertEquals(goal, result);
 		
 		TreeNode treeNode2 = BracketExpUtil.generateTree("[(NP (DNP (NP (NN 黑色))(DEG 的)) (NP (NN 椅子)))]");
-		Animacy result2 = agbd.getAnimacy(treeNode2);
-		Animacy goal2 = Animacy.FALSE;
+		Set<Animacy> result2 = agbd.getAnimacy(treeNode2);
+		Set<Animacy> goal2 = new HashSet<Animacy>();
+		goal2.add(Animacy.INANIMACY);
 		assertEquals(goal2, result2);
 		
 		TreeNode treeNode3 = BracketExpUtil.generateTree("[(NP(DNP (NP (NN 小明))(DEG 的))(NP (NN 妈妈)))]");
-		Animacy result3 = agbd.getAnimacy(treeNode3);
-		Animacy goal3 = Animacy.UNKNOWN;
+		Set<Animacy> result3 = agbd.getAnimacy(treeNode3);
+		Set<Animacy> goal3 = new HashSet<Animacy>();
+		goal3.add(Animacy.ANI_HUMAN);
 		assertEquals(goal3, result3);
+		
+		TreeNode treeNode4 = BracketExpUtil.generateTree("[(PN 它)]");
+		Set<Animacy> result4 = agbd.getAnimacy(treeNode4);
+		Set<Animacy> goal4 = new HashSet<Animacy>();
+		goal4.add(Animacy.ANI_ANIMAL);
+		goal4.add(Animacy.INANIMACY);
+		assertEquals(goal4, result4);
 	}
 }

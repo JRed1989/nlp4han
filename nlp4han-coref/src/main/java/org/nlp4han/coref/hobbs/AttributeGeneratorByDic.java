@@ -16,30 +16,35 @@ import org.nlp4han.coref.hobbs.MentionAttribute.Gender;
 import org.nlp4han.coref.hobbs.MentionAttribute.Number;
 
 import com.lc.nlp4han.constituent.TreeNode;
-import com.lc.nlp4han.util.DictionaryLoader;
 
+/**
+ * 源于字典的属性生成器
+ * 
+ * @author 杨智超
+ *
+ */
 public class AttributeGeneratorByDic implements AttributeGenerator
 {
 	private static Map<String, Properties> dictionaries = new HashMap<String, Properties>();
+	MentionAttribute attribute;
 
 	@Override
 	public MentionAttribute extractAttributes(TreeNode treeNode)
 	{
-		MentionAttribute result = new MentionAttribute();
-		result.setAni(getAnimacy(treeNode));
-		result.setGen(getGender(treeNode));
-		result.setNum(getNumber(treeNode));
-		return result;
+		attribute = new MentionAttribute();
+		attribute.setAnimacy(getAnimacy(treeNode));
+		attribute.setGender(getGender(treeNode));
+		attribute.setNumber(getNumber(treeNode));
+		return attribute;
 	}
 
-	public Properties loadProperties(String fileName, String encoding) throws IOException
+	private Properties loadProperties(String fileName, String encoding) throws IOException
 	{
 		String key = fileName + encoding;
 		if (!dictionaries.containsKey(key))
 		{
 			Properties result = new Properties();
-			InputStream stream = AttributeGeneratorByDic.class.getClassLoader()
-					.getResourceAsStream(fileName);
+			InputStream stream = AttributeGeneratorByDic.class.getClassLoader().getResourceAsStream(fileName);
 			result.load(new InputStreamReader(stream, encoding));
 			dictionaries.put(key, result);
 			return result;
@@ -53,9 +58,25 @@ public class AttributeGeneratorByDic implements AttributeGenerator
 	 * @param treeNode
 	 * @return
 	 */
-	public Gender getGender(TreeNode treeNode)
+	public Set<Gender> getGender(TreeNode treeNode)
 	{
-		
+		Set<Gender> result = new HashSet<Gender>();
+		if (this.attribute != null && attribute.getAnimacy().size() > 0)
+		{
+			if (this.attribute.getAnimacy().contains(Animacy.INANIMACY))
+			{
+				result.add(Gender.NONE);
+				return result;
+			}
+		}
+		else
+		{
+			if (getAnimacy(treeNode).contains(Animacy.INANIMACY))
+			{
+				result.add(Gender.NONE);
+				return result;
+			}
+		}
 		try
 		{
 			String value;
@@ -70,18 +91,24 @@ public class AttributeGeneratorByDic implements AttributeGenerator
 				Properties genderDic = loadProperties("gender.properties", "utf-8");
 				value = genderDic.getProperty(TreeNodeUtil.getString(head));
 			}
-			if (value != null && value.equalsIgnoreCase("female"))
-				return Gender.FEMALE;
-			else if (value != null && value.equalsIgnoreCase("male"))
-				return Gender.MALE;
-			else
-				return Gender.UNKNOWN;
+
+			if (value != null)
+			{
+				String[] values = value.split("_");
+				for (String str : values)
+				{
+					if (str != null && str.equalsIgnoreCase("female"))
+						result.add(Gender.FEMALE);
+					else if (str != null && str.equalsIgnoreCase("male"))
+						result.add(Gender.MALE);
+				}
+			}
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
-		return Gender.UNKNOWN;
+		return result;
 	}
 
 	/**
@@ -90,25 +117,31 @@ public class AttributeGeneratorByDic implements AttributeGenerator
 	 * @param treeNode
 	 * @return
 	 */
-	public Number getNumber(TreeNode treeNode)
+	public Set<Number> getNumber(TreeNode treeNode)
 	{
-
+		Set<Number> result = new HashSet<Number>();
 		if (treeNode.getNodeName().equals("PN"))
 		{
-			
-			
 			String value;
+			String[] values;
 			Properties numberDic;
 			try
 			{
 				numberDic = loadProperties("number_PN.properties", "utf-8");
 				value = numberDic.getProperty(treeNode.getChildName(0));
-				if (value != null && value.equalsIgnoreCase("singular"))
-					return Number.SINGULAR;
-				else if (value != null && value.equalsIgnoreCase("plural"))
-					return Number.PLURAL;
-				else
-					return Number.UNKNOWN;
+				if (value != null)
+				{
+					values = value.split("_");
+					for (String str : values)
+					{
+						if (str.equalsIgnoreCase("singular"))
+							result.add(Number.SINGULAR);
+						else if (str.equalsIgnoreCase("plural"))
+							result.add(Number.PLURAL);
+					}
+				}
+				if (result.size() > 0)
+					return result;
 			}
 			catch (IOException e)
 			{
@@ -123,36 +156,50 @@ public class AttributeGeneratorByDic implements AttributeGenerator
 				TreeNode head = TreeNodeUtil.getHead(treeNode);
 				String stringOfHead = TreeNodeUtil.getString(head);
 				if (stringOfHead.contains("们"))
-					return Number.PLURAL;
+				{
+					result.add(Number.PLURAL);
+					return result;
+				}
 				if (TreeNodeUtil.isParataxisNP(head))
 				{
-					return Number.PLURAL;
+					result.add(Number.PLURAL);
+					return result;
 				}
 			}
 			String stringOfLeafNodes;
 			if (TreeNodeUtil.hasNodeName((List<TreeNode>) treeNode.getChildren(), "DP"))
 			{// 含有DP结点，则查表number_DP.properties
-				List<TreeNode> nodes = TreeNodeUtil.getChildNodeWithSpecifiedName(treeNode, new String[] { "DP" });
-				TreeNode dpNode = nodes.get(0);
 				stringOfLeafNodes = TreeNodeUtil.getString(treeNode);
 				Properties numberDicDP;
 				try
 				{
 					numberDicDP = loadProperties("number_DP.properties", "utf-8");
-					Set keys = numberDicDP.keySet();
-					Iterator it = keys.iterator();
+					Set<Object> keys = numberDicDP.keySet();
+					Iterator<Object> it = keys.iterator();
 					while (it.hasNext())
 					{
 						String key = (String) it.next();
 						if (stringOfLeafNodes.contains(key))
 						{
 							String value = numberDicDP.getProperty(key);
-							if (value != null && value.equalsIgnoreCase("singular"))
-								return Number.SINGULAR;
-							else if (value != null && value.equalsIgnoreCase("plural"))
-								return Number.PLURAL;
-							else
-								return Number.UNKNOWN;
+							if (value != null)
+							{
+								String[] values = value.split("_");
+								for (String str : values)
+								{
+									if (str.equalsIgnoreCase("singular"))
+									{
+										result.add(Number.SINGULAR);
+										return result;
+									}
+									else if (str.equalsIgnoreCase("plural"))
+									{
+										result.add(Number.PLURAL);
+										return result;
+									}
+								}
+							}
+
 						}
 					}
 				}
@@ -168,19 +215,20 @@ public class AttributeGeneratorByDic implements AttributeGenerator
 				TreeNode qpNode = qpNodes.get(0);
 				if (TreeNodeUtil.hasNodeName((List<TreeNode>) qpNode.getChildren(), "CD"))
 				{
-					List<TreeNode> cdNodes = TreeNodeUtil.getNodesWithSpecified(treeNode,
-							new String[] { "CD" });
+					List<TreeNode> cdNodes = TreeNodeUtil.getNodesWithSpecified(treeNode, new String[] { "CD" });
 					TreeNode cdNode = cdNodes.get(0);
 					if (cdNode.getChild(0).getNodeName().equals("一") || cdNode.getChild(0).getNodeName().equals("1"))
 					{
-						return Number.SINGULAR;
+						result.add(Number.SINGULAR);
+						return result;
 					}
-					return Number.PLURAL;
+					result.add(Number.PLURAL);
+					return result;
 				}
 			}
 		}
 
-		return Number.UNKNOWN;
+		return result;
 	}
 
 	/**
@@ -189,9 +237,9 @@ public class AttributeGeneratorByDic implements AttributeGenerator
 	 * @param treeNode
 	 * @return
 	 */
-	public Animacy getAnimacy(TreeNode treeNode)
+	public Set<Animacy> getAnimacy(TreeNode treeNode)
 	{
-		
+		Set<Animacy> result = new HashSet<Animacy>();
 		try
 		{
 			String value = null;
@@ -204,12 +252,12 @@ public class AttributeGeneratorByDic implements AttributeGenerator
 			{
 				TreeNode head = TreeNodeUtil.getHead(treeNode);
 				Properties animacyDic = loadProperties("animacy.properties", "utf-8");
-				Set keys = animacyDic.keySet();
-				Iterator it = keys.iterator();
+				Set<Object> keys = animacyDic.keySet();
+				Iterator<Object> it = keys.iterator();
 				String strOfHead = TreeNodeUtil.getString(head);
 				while (it.hasNext())
 				{
-					String key = (String)it.next();
+					String key = (String) it.next();
 					if (strOfHead.contains(key))
 					{
 						value = animacyDic.getProperty(key);
@@ -217,18 +265,25 @@ public class AttributeGeneratorByDic implements AttributeGenerator
 					}
 				}
 			}
-			if (value != null && value.equalsIgnoreCase("true"))
-				return Animacy.TRUE;
-			else if (value != null && value.equalsIgnoreCase("false"))
-				return Animacy.FALSE;
-			else
-				return Animacy.UNKNOWN;
+			if (value != null)
+			{
+				String[] values = value.split("_");
+				for (String str : values)
+				{
+					if (str.equalsIgnoreCase("human"))
+						result.add(Animacy.ANI_HUMAN);
+					else if (str.equalsIgnoreCase("animal"))
+						result.add(Animacy.ANI_ANIMAL);
+					else if (str.equalsIgnoreCase("inanimacy"))
+						result.add(Animacy.INANIMACY);
+				}
+			}
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
-		return Animacy.UNKNOWN;
+		return result;
 	}
-	
+
 }

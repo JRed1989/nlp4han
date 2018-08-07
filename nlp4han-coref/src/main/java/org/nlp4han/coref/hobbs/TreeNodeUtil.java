@@ -13,8 +13,9 @@ public class TreeNodeUtil
 	private final static String[] POSTAGS = { "AD", "AS", "BA", "CC", "CD", "CS", "DEC", "DEG", "DER", "DEV", "DT",
 			"ETC", "FW", "IJ", "JJ", "LB", "LC", "M", "MSP", "NN", "NR", "NT", "OD", "ON", "P", "PN", "PU", "SB", "SP",
 			"VA", "VC", "VE", "VV" };
-	private final static String[] TAGSFORPHRASE = { "ADJP", "ADVP", "CLP", "CP", "DNP", "DP", "DVP", "FRAG", "IP",
-			"LCP", "LST", "NP", "PP", "PRN", "QP", "UCP", "VP" };
+	// private final static String[] TAGSFORPHRASE = { "ADJP", "ADVP", "CLP", "CP",
+	// "DNP", "DP", "DVP", "FRAG", "IP",
+	// "LCP", "LST", "NP", "PP", "PRN", "QP", "UCP", "VP" };
 
 	/**
 	 * 至结点treeNode向上搜索，返回第一个结点名为treeNodeName的结点；若treeNodeName为null，则返回treeNode的父节点
@@ -284,6 +285,20 @@ public class TreeNodeUtil
 	 * @param nPNode
 	 * @return
 	 */
+	// public static TreeNode getHead(TreeNode nPNode)
+	// {
+	// int size = nPNode.getChildrenNum();
+	// if (size >1 && nPNode.getLastChild().getNodeName().equals("NP") &&
+	// nPNode.getChild(size - 2).equals("DNP"))
+	// {
+	// TreeNode np = nPNode.getLastChild();
+	// if (np.getChildrenNum() == 1)
+	// return np.getChild(0);
+	// else
+	// return getHead(np);
+	// }
+	// else if ()
+	// }
 	public static TreeNode getHead(TreeNode nPNode)
 	{
 		if (nPNode == null || !nPNode.getNodeName().equals("NP"))
@@ -313,7 +328,7 @@ public class TreeNodeUtil
 			}
 			else
 			{
-				result = getLastNodeWithSpecifiedName(childrenNodes, new String[] { "NN", "NR", "NP"});
+				result = getLastNodeWithSpecifiedName(childrenNodes, new String[] { "NN", "NR", "NP" });
 				if (result.getNodeName().equals("NP"))
 					result = getHead(result);
 				return result;
@@ -322,27 +337,32 @@ public class TreeNodeUtil
 		}
 		return result;
 	}
-	
+
+	/**
+	 * 是否为并列结构的NP结点
+	 * 
+	 * @param treeNode
+	 * @return
+	 */
 	public static boolean isParataxisNP(TreeNode treeNode)
-	{
+	{ // TODO：算法有待改善
 		if (treeNode == null || !treeNode.getNodeName().equals("NP"))
 		{
 			throw new RuntimeException("NPNode错误！");
 		}
 		List<TreeNode> childrenNodes = (List<TreeNode>) treeNode.getChildren();
 
-		
 		if (allNodeNames(childrenNodes, new String[] { "NN", "NR", "CC", "PU", "NP" }))
 		{
 			List<TreeNode> pus = getNodesWithSpecified(treeNode, new String[] { "、" });
 			List<TreeNode> ccs = getNodesWithSpecified(treeNode, new String[] { "CC" });
 			int num = pus.size() + ccs.size();
-			if (num >= childrenNodes.size()*0.3)
+			if (num >= childrenNodes.size() * 0.3)
 				return true;
 		}
-		
+
 		return false;
-		
+
 	}
 
 	/**

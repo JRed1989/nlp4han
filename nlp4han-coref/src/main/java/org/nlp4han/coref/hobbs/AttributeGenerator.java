@@ -3,6 +3,8 @@ package org.nlp4han.coref.hobbs;
 import com.lc.nlp4han.constituent.TreeNode;
 
 /**
+ * 属性生成器接口
+ * 
  * @author 杨智超
  *
  */

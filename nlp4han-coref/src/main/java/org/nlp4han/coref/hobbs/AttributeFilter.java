@@ -1,11 +1,12 @@
 package org.nlp4han.coref.hobbs;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.nlp4han.coref.hobbs.MentionAttribute.Animacy;
 import org.nlp4han.coref.hobbs.MentionAttribute.Gender;
 import org.nlp4han.coref.hobbs.MentionAttribute.Number;
-import org.nlp4han.coref.hobbs.MentionAttribute.Person;
 
 import com.lc.nlp4han.constituent.TreeNode;
 
@@ -32,6 +33,14 @@ public class AttributeFilter extends Filtering
 		this.attributeGenerator = attributeGenerator;
 	}
 
+	/**
+	 * 设置参考结点和属性生成器
+	 * 
+	 * @param referenceNode
+	 *            参考结点
+	 * @param attributeGenerator
+	 *            属性生成器
+	 */
 	public void setUp(TreeNode referenceNode, AttributeGenerator attributeGenerator)
 	{
 		this.referenceNode = referenceNode;
@@ -40,6 +49,12 @@ public class AttributeFilter extends Filtering
 			this.referenceNodeAttribute = this.attributeGenerator.extractAttributes(referenceNode);
 	}
 
+	/**
+	 * 设置参考结点
+	 * 
+	 * @param referenceNode
+	 *            参考结点
+	 */
 	public void setReferenceNode(TreeNode referenceNode)
 	{
 		this.referenceNode = referenceNode;
@@ -63,18 +78,48 @@ public class AttributeFilter extends Filtering
 	 */
 	public boolean isMatched(MentionAttribute attribute1, MentionAttribute attribute2)
 	{
-		if ((attribute1.getGen().equals(Gender.FEMALE) && attribute2.getGen().equals(Gender.MALE))
-				|| (attribute1.getGen().equals(Gender.MALE) && attribute2.getGen().equals(Gender.FEMALE)))
+		if ((!GenderCompatibility(attribute1, attribute2)))
 			return false;
-		if ((attribute1.getNum().equals(Number.PLURAL) && attribute2.getNum().equals(Number.SINGULAR))
-				|| (attribute2.getNum().equals(Number.PLURAL) && attribute1.getNum().equals(Number.SINGULAR)))
+		if (!NumberCompatibility(attribute1, attribute2))
 			return false;
-		if ((attribute1.getAni().equals(Animacy.TRUE) && attribute2.getAni().equals(Animacy.FALSE))
-				|| (attribute2.getAni().equals(Animacy.TRUE) && attribute1.getAni().equals(Animacy.FALSE)))
+		if (!AnimacyCompatibility(attribute1, attribute2))
 			return false;
-		if ((attribute1.getPer().equals(Person.TRUE) && attribute2.getPer().equals(Person.FALSE))
-				|| (attribute2.getPer().equals(Person.TRUE) && attribute1.getPer().equals(Person.FALSE)))
+		return true;
+	}
+
+	private boolean AnimacyCompatibility(MentionAttribute attribute1, MentionAttribute attribute2)
+	{
+		Set<Animacy> a1 = attribute1.getAnimacy();
+		Set<Animacy> a2 = attribute2.getAnimacy();
+		return compare(a1, a2);
+	}
+
+	private boolean NumberCompatibility(MentionAttribute attribute1, MentionAttribute attribute2)
+	{
+		Set<Number> n1 = attribute1.getNumber();
+		Set<Number> n2 = attribute2.getNumber();
+		return compare(n1, n2);
+	}
+
+	private boolean GenderCompatibility(MentionAttribute attribute1, MentionAttribute attribute2)
+	{
+		Set<Gender> g1 = attribute1.getGender();
+		Set<Gender> g2 = attribute2.getGender();
+		return compare(g1, g2);
+	}
+
+	private <T> boolean compare(Set<T> s1, Set<T> s2)
+	{
+		if (s1.size() > 0 && s2.size() > 0)
+		{
+			Iterator<T> it1 = s1.iterator();
+			while (it1.hasNext())
+			{
+				if (s2.contains(it1.next()))
+					return true;
+			}
 			return false;
+		}
 		return true;
 	}
 

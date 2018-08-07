@@ -1,5 +1,8 @@
 package org.nlp4han.coref.hobbs;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Mention属性类
  * 
@@ -11,95 +14,90 @@ public class MentionAttribute
 
 	public MentionAttribute()
 	{
-		this.ani = Animacy.UNKNOWN;
-		this.gen = Gender.UNKNOWN;
-		this.num = Number.UNKNOWN;
-		this.per = Person.UNKNOWN;
+
 	}
 
 	/**
-	 * 性别： MALE——男性；FEMALE——女性；UNKNOWN——不确定；
+	 * 性别： MALE——男性；FEMALE——女性；NONE——无性别；
 	 */
 	public enum Gender
 	{
-		MALE, FEMALE, UNKNOWN;
+		MALE, FEMALE, NONE;
 	}
 
 	/**
-	 * 数量： SINGULAR——单数；PLURAL——复数；UNKNOWN——不确定；
+	 * 数量： SINGULAR——单数；PLURAL——复数；
 	 */
 	public enum Number
 	{
-		SINGULAR, PLURAL, UNKNOWN;
+		SINGULAR, PLURAL;
 	}
 
 	/**
-	 * 动物性： TRUE——动物；FALSE——非动物；UNKNOWN——不确定；
+	 * 动物性： ANI_ANIMAL——动物；INANIMACY——非动物；ANI_HUMAN——人；
 	 */
 	public enum Animacy
 	{
-		TRUE, FALSE, UNKNOWN;
+		INANIMACY, ANI_HUMAN, ANI_ANIMAL;
 	}
 
-	
-
 	/**
-	 * 人： TRUE——动物；FALSE——非动物；UNKNOWN——不确定；
+	 * 人称：
 	 */
 	public enum Person
 	{
-		TRUE, FALSE, UNKNOWN;
+		FIRST, SECOND, THIRD;
 	}
 
-	private Gender gen;
-	private Number num;
-	private Animacy ani;
-	private Person per;
+	private Set<Gender> gender = new HashSet<Gender>();
+	private Set<Number> number = new HashSet<Number>();
+	private Set<Animacy> animacy = new HashSet<Animacy>();
+	private Set<Person> person = new HashSet<Person>();
 
-	public Gender getGen()
+	public Set<Gender> getGender()
 	{
-		return gen;
+		return gender;
 	}
 
-	public void setGen(Gender gen)
+	public void setGender(Set<Gender> gender)
 	{
-		this.gen = gen;
+		this.gender = gender;
 	}
 
-	public Number getNum()
+	public Set<Number> getNumber()
 	{
-		return num;
+		return number;
 	}
 
-	public void setNum(Number num)
+	public void setNumber(Set<Number> number)
 	{
-		this.num = num;
+		this.number = number;
 	}
 
-	public Animacy getAni()
+	public Set<Animacy> getAnimacy()
 	{
-		return ani;
+		return animacy;
 	}
 
-	public void setAni(Animacy ani)
+	public void setAnimacy(Set<Animacy> animacy)
 	{
-		this.ani = ani;
+		this.animacy = animacy;
 	}
 
-	public Person getPer()
+	public Set<Person> getPerson()
 	{
-		return per;
+		return person;
 	}
 
-	public void setPer(Person per)
+	public void setPerson(Set<Person> person)
 	{
-		this.per = per;
+		this.person = person;
 	}
-	
+
 	@Override
 	public String toString()
 	{
-		return "[gen=" + gen + ", num=" + num + ", ani=" + ani + ", per=" + per + "]";
+		return "[gender=" + gender + ", number=" + number + ", animacy=" + animacy + ", person=" + person + "]";
 	}
 
 }

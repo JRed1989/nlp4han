@@ -1,0 +1,169 @@
+(IP(IP(NP(NR 黄秋雅))(VP(VC 是)(NP(QP(CLP(M 个)))(ADJP(JJ 老))(NP(NN 姑娘)))))(PU ，)(IP(NP(PN 她))(NP(DP(DT 这)(QP(CD 一)))(NP(NN 辈子)))(PU ，)(VP(VP(ADVP(AD 大概))(ADVP(AD 连))(VP(VV 恋爱)))(VP(ADVP(AD 都))(ADVP(AD 没))(VP(VV 谈过)))))(PU 。))
+0-0-她
+(NP(NR 黄秋雅))
+#1
+(IP(NP(PN 我))(VP(PP(P在)(LCP(NP(DNP(NP(NP(NR 太平洋))(NP(NN 酒店)))(DEG 的))(NP(NN 咖啡厅)))(LC 里)))(VP(VV 看见)(AS 了)(NP(NR 庞德))))(PU 。))
+(IP(IP(NP(NP(PN 他))(CC 和)(NP(NP(QP(CD 一)(CLP(M 个)))(ADJP(JJ 陌生))(NP(NN 姑娘)))(ADJP(JJ 面对面))(NP(NN 坐着))))(PU ，)(VP(VP(VV 喝)(NP(NN 咖啡)))(PU ，)(VP(VV 说话))))(PU ，)(NP(NN 耸肩膀))(PU 。))
+1-0-他
+(NP (NR 庞德))
+#2
+(IP(NP(DNP(NP(NN 小明))(DEG 的))(NP(NN 妈妈)))(VP(VC 是)(NP(QP(CD 一)(CLP(M 名)))(NP(NN 教师))))(PU 。))
+(IP(IP(NP(NN 家长们))(VP(ADVP(AD 都))(ADVP(AD 很))(VP(VV 喜欢)(NP(PN 她)))))(PU 。))
+1-0-她
+(NP(DNP(NP(NN 小明))(DEG 的))(NP(NN 妈妈)))
+#3
+(IP(NP(NR 萨曼))(VP(VP(VV 不得已))(PU ，)(IP(NP(CP(IP(VP(BA 把)(IP(NP(PN 他))(VP(VV 看到)))))(DEC 的))(NP(NN 情景)))(VP(ADVP(AD 一一))(VP(VV 讲出)))))(PU 。))
+0-0-他
+(NP(NR 萨曼))
+#4
+(IP(LCP(IP(NP(NN 宰相))(VP(VRD (VV 吩咐)(VV 完))))(LC 后))(PU ，)(VP(VV 回到)(NP(NN 国王)(NN 面前)))(PU 。))
+(IP(IP(NP(NN 国王))(VP(VV 命令)(NP(PN 他))(IP(VP(VV 赏)(NP(NN 渔翁))(NP(QP(CD 四十)(CLP(M 个)))(NP(NN 金币)))))))(PU ，)(IP(NP(NN 宰相))(VP(VV 遵命)(NP(NN 赏赐)(NN 渔翁))))(PU 。))
+1-0-他
+(NP(NN 宰相))
+#5
+(IP(IP(NP(NN 父亲))(VP(ADVP(AD 原本))(ADVP(AD 没有))(VP(VV 做)(AS 过)(NP(NN 大事)))))(PU ，)(IP(NP(PN 他)(NN 一生))(VP(ADVP(AD 都))(PP(P在)(LCP(NP(NN 澡堂))(LC 中)))(VP(VV 替人)(IP(VP(VV 按摩))))))(PU 。))
+0-0-他
+(NP(NN 父亲))
+#6
+(IP(NP(PN 我))(VP(VV 看着)(NP(DNP(NP(NN 远处))(DEC 的))(NP(NR 李明))))(PU ，)(VP(VV 想到)(AS 了)(NP(CP(IP(NP(PN 他))(VP(PP(P 在)(NP(NN 城里)))(VP(VV 工作))))(DEC 的))(NP(NN 哥哥))))(PU 。))
+0-0-他
+(NP(NR 李明))
+#7
+(IP(IP(NP(NR 约翰))(VP(VP(VV 走到)(NP(NP(NR 汤姆))(NP(NN 面前))))(PU ，)(VP(PP(P 对)(NP(PN 他)))(VP(VV 说)(PU ：)(IP(PU “)(VP(ADVP(AD 非常))(VP(VV 感谢)(NP(DNP(NP(PN 你))(DEG 的))(NP(NN 帮助))))))))))(PU ！)(PU ”))
+0-0-他
+(NP(NR 汤姆))
+#8
+(IP(NP(ADJP(JJ 小))(NP(NR 彼得)))(VP(VC 是)(NP(DNP(NP(QP(CD 一)(CLP(M 个)))(NP(NN 商人)))(DEG 的))(NP(NN 儿子))))(PU 。))
+(IP(ADVP(AD 有时))(NP(PN 他))(VP(VP(VV 得到)(LCP(NP(CP(IP(NP(PN 他))(VP(NP(NN 爸爸))(VP(VV 做)(NP(NN 生意)))))(DEC 的))(NP(NN 商店)))(LC 里)))(VP(VV 去)(VP(VV 瞧瞧))))(PU 。))
+1-0-他
+(NP(ADJP(JJ 小))(NP(NR 彼得)))
+#9
+(IP(NP(NT 晚上))(PU ，)(NP(ADJP(JJ 小))(NP(NR 彼得)))(VP(PP(P 在)(NP(DNP(NP(PN 他))(DEG 的))(NP(NN 餐盘)(NN 旁边))))(VP(VV 找到)(AS 了)(NP(CP(IP(NP(PN 他))(VP(VV 想要)))(DEC 的))(NP(NN 报酬)))))(PU 。))
+0-0-他
+(NP(ADJP(JJ 小))(NP(NR 彼得)))
+#10
+(IP(NP(PN 我))(VP(VP(PP(P 在)(NP(NN 街上)))(ADVP(AD 独自))(VP(VV 走着)))(PU ，)(VP(VV 听见)(NP(NP(NR 李明))(PP(PP(P 从)(NP(NN 后面)))(PP(P 跟)(NP(VV 上来)))))))(PU 。))
+(IP(NP(PN 我))(VP(NP(NN 手里))(VP(VV 拿着)(NP(IP(IP(NP(NN 戒尺))(VP(VV 站住)))(ETC 等))(NP(PN 他)))))(PU 。))
+1-0-他
+(NP(NR 李明))
+#11
+(IP(NP(NR 约翰))(VP(VP(VV 进了)(NP(NN 屋)))(PU ，)(VP(VV 见)(IP(NP(NN 爸爸))(VP(ADVP(AD 正在))(VP(VV 算帐))))))(PU 。))
+(IP(NP(PN 他))(VP(VP(VV 坐在)(NP(VV 炕上)))(PU ，)(VP(DVP(VP(VV 愣愣))(DEV 地))(VP(VV 看)(AS 着)(NP(NN 爸爸)))))(PU 。))
+1-0-他
+(NP(NR 约翰))
+#12
+(IP(IP(NP(NR 约翰))(VP(VP(VV 躺在)(NP(NN 床上)))(VP(VV 翻来覆去)(IP(VP(VPT(VV 睡)(AD 不)(VV 着)))))))(PU ，)(IP(NP(PN 他))(VP(VP(VV 担心)(NP(NN 小芳)))(PU ，)(VP(ADVP(AD 不))(VP(VV 知)(IP(NP(PN 她))(VP(NP(NT 现在))(VP(VV 怎么样)(AS 了))))))))(PU 。)(PU 。))
+0-0-他
+(NP(NR 约翰))
+#13
+(IP(IP(NP(NR 汤姆))(VP(VV 见)(IP(NP(PN 大家))(VP(ADVP(AD 都))(VP(VV 喜笑颜开))))))(PU ，)(IP(NP(PN 自己))(VP(ADVP(AD 也))(VP(VRD(VA 高兴)(VV 起来)))))(PU 。))
+0-0-自己
+(NP(NR 汤姆))
+#14
+(IP(IP(NP(NN 小芳))(VP(ADVP(AD 完全))(VP(VV 抛弃)(AS 了)(NP(NR 李明)))))(PU ，)(IP(NP(NN 背))(VP(PP(P 对着)(NP(PN 他)))(DVP(VP(VA 激动))(DEV 地))(PP(P 和)(NP(NR 吴刚)))(VP(VV 说话))))(PU 。))
+0-0-他
+(NP(NR 李明))
+#15
+(IP(NP(QP(CD 一)(CLP(M 个)))(NP(NN 道士)))(VP(VV 说)(IP(NP(NR 李明))(VP(NP(NT 去年))(VP(VV 会)(VP(VV 碰上)(IP(VP(VV 命中)(NP(CP(IP(VP(PP(P 和)(NP(PN 他)))(VP(VV 结婚))))(DEC 的))(DP(DT 那个))(NP(NN 人))))))))))(PU 。))
+0-0-他
+(NP(NR 李明))
+#16
+(IP(NP(NR 小芳))(VP(ADVP(VV 低头))(DVP(VP(VA 沉痛))(DEV 地))(VP(VRD(VV 认识)(VV 到))(PU ，)(IP(NP(PN 自己))(VP(DP(DT 这)(CLP(M 次)))(VP(VV 算是)(IP(VP(ADVP(AD 彻底))(VP(VV 栽)(AS 了)))))))))(PU 。))
+0-0-自己
+(NP(NR 小芳))
+#17
+(IP(NP(NR 小芳))(VP(VP(SB 被)(VP(VV 压进)(NP(NN 贵宾室))))(PU ，)(VP(ADVP(AD 却))(VP(VV 见)(IP(NP(NR 李明))(VP(VV 坐在)(LCP(NP(NN 沙发))(LC 上))))))(PU ，)(IP(NP(PN 她))(VP(DVP(VP(VV 吃惊))(DEV 地))(VP(VV 瞪大)(AS 了)(NP(NN 眼睛))))))(PU 。))
+0-0-她
+(NP(NR 小芳))
+#18
+(IP(NP(NR 乔治))(VP(VV 见)(IP(NP(NR 汤姆))(VP(VP(VP(VV 用)(NP(CP(IP(VP(VV 询问)))(DEC 的))(NP(NN 目光))))(VP(VV 看)(AS 着)(NP(PN 自己))))(PU ，)(VP(ADVP(AD 便))(VP(VV 笑)(AS 着)(NP(NN 点点头)))))))(PU 。))
+0-0-自己
+(NP(NR 乔治))
+#19
+(IP(NP(NR 吴刚)(CC 和)(NR 小芳))(VP(ADVP(AD 显然))(VP(LB 被)(IP(NP(DP(DT 这)(CLP(M 番)))(NP(NN 话)))(VP(VV 镇住)))))(SP 了)(PU 。))
+(IP(NP(NR 吴刚))(VP(ADVP(AD 忍不住))(ADVP(AD 扭头))(DVP(VP(VV 疑惑))(DEV 地))(VP(VV 看)(AS 了)(NP(PN 她))(ADVP(AD 一眼))))(PU 。))
+1-0-她
+(NP(NR 小芳))
+#20
+(IP(NP(NR 小芳))(VP(ADVP(AD 忽然))(VP(VV 看到)(IP(NP(NN 面前))(VP(VE 有)(NP(QP(CD 一)(CLP(M 双)))(NP(NN 脚)))))))(PU 。))
+(IP(IP(VP(VP(VV 仰起)(NP(NN 头)))(VP(VV 看见)(NP(QP(CD 一)(CLP(M 个)))(NP(NN 男人))))))(PU ，)(NP(DNP(NP(PN 他))(DEG 的))(NP(NN 帽子)))(VP(BA 把)(IP(NP(NN 眼睛))(VP(ADVP(AD 都))(VP(VV 遮住)(AS 了)))))(PU 。))
+1-0-他
+(NP(QP(CD 一)(CLP(M 个)))(NP(NN 男人)))
+#21
+(IP(IP(NP(NR 小芳))(VP(VV 觉得)(IP(NP(NT 今天))(NP(NR 李明))(VP(ADVP(AD 有点))(VP(VA 奇怪))))))(PU ，)(IP(VP(ADVP(AD 明明))(ADVP(AD 已经))(VP(VP(VRD(VV 打扫)(VV 完))(AS 了))(VP(ADVP(AD 却))(ADVP(AD 又))(VP(LB 被)(IP(NP(PN 他))(VP(VV 找出)(NP(NP(ADJP(JJ 种种))(NP(NN 理由)))(NP(NN 返工))))))))))(PU 。))
+0-0-他
+(NP(NR 李明))
+#22
+(IP(NP(NR 张三))(VP(VP(ADVP(AD 直))(VP(VV 起身)))(PU ，)(VP(NP(ADVP(AD 四处))(NP(NR 张望着)))))(PU 。))
+(IP(NP(NR 李明))(VP(VP(VV 感觉)(IP(VP(ADVP(AD 有点))(VP(VA 不对劲)))))(PU ，)(VP(DVP(VP(ADVP(AD 有点))(VP(VA 紧张)))(DEV 地))(VP(VV 看)(AS 着)(NP(PN 他)))))(PU 。))
+1-0-他
+(NP(NR 张三))
+#23
+(IP(NP(NN 小芳))(VP(DVP(VP(ADVP(AD 很))(VP(VA 无奈)))(DEV 地))(VP(VV 看看)(NP(NN 父亲))))(PU 。))
+(IP(NP(PN 她))(VP(VV 知道)(IP(NP(NN 父亲))(VP(ADVP(AD 也))(ADVP(AD 确实))(VP(VE 没有)(NP(NN 办法))))))(PU 。))
+1-0-她
+(NP(NN 小芳))
+#24
+(IP(NP(NR 小芳))(VP(VP(ADVP(CD 一))(VP(VV 进来)(NP(DP(DT 整个))(NP(NN 屋子)))))(VP(ADVP(AD 就))(ADVP(AD 都))(VP(VV 弥漫)(AS 着)(NP(DNP(NP(PN 她)(NN 身上))(DEG 的))(NP(NN 香水味))))))(PU 。))
+0-0-她
+(NP(NR 小芳))
+#25
+(IP(NP(NR 张三))(VP(ADVP(AD 刚))(VP(VV 进门)(IP(VP(VP(VV 迎面)(IP(VP(VV 见)(NP(NR 李明)))))(VP(VRD(VV 走了)(VV 过来)))))))(PU 。))
+(IP(NP(NR 李明))(VP(ADVP(AD 只是))(VP(VV 抬头)(IP(IP(VP(VV 看)(AS 了)(NP(NP(PN 他))(NP(QP(CD 一))(NP(NN 眼))))))(VP(ADVP(AD 便))(VP(VV 走)(AS 了)(NP(NT 过去)))))))(PU 。))
+1-0-他
+(NP(NR 张三))
+#26
+(IP(IP(NP(NR 小芳))(VP(PP(P 向)(NP(NR 李明)))(VP(VV 说)(AS 了)(NP(QP(CD 很多))(NP(NN 话))))))(PU ，)(IP(ADVP(AD 但))(NP(PN 她))(VP(ADVP(AD 并没有))(VP(VRD(VV 意识)(VV 到))(IP(NP(CP(IP(NP(PN 自己))(VP(VV 用)))(DEC 的)))(VP(VC 是)(NP(NN 法语)))))))(PU 。))
+0-0-她
+(NP(NR 小芳))
+#27
+(IP(NP(NR 乔治))(VP(VP(VRD(VV 站)(VV 起身)(VV 来)))(PU ，)(VP(VV 拍)(AS 了)(NP(CP(IP(VP(VV 拍)(NP(NN 身上))))(DEC 的))(NP(NN 尘土)))))(PU 。))
+(IP(NP(NR 小芳))(VP(DVP(VP(VA 得意))(DEV 地))(VP(VV 打量)(AS 着)(NP(PN 他))))(PU 。))
+1-0-他
+(NP(NR 乔治))
+#28
+(IP(NP(NR 小芳))(VP(VP(VV 躺在)(NP(NP(NR 李明))(NP(NN 怀里))))(PU ，)(VP(VV 看)(AS 着)(IP(NP(DNP(NP(PN 自己))(DEG 的))(NP(NN 衣襟)))(VP(LB 被)(IP(NP(NN 血))(VP(VV 染红)))))))(PU 。))
+0-0-自己
+(NP(NR 小芳))
+#29
+(IP(IP(NP(NR 小芳))(VP(LCP(IP(VP(VV 醒来)))(LC 时))(VP(VV 发现)(IP(NP(PN 自己))(VP(SB 被)(VP(VV 反锁)(PP(P 在)(NP(NN 房间里)))))))))(PU ，)(IP(NP(ADJP(JJ 小))(NP(NN 屋里)))(VP(ADVP(AD 只))(VP(VE 有)(NP(NP(PN 她))(QP(CD 一)(CLP(M 个)))(NP(NN 人))))))(PU 。))
+0-0-她
+(NP(NR 小芳))
+#30
+(IP(NP(NR 小芳))(VP(ADVP(AD 一下子))(VP(VRD(VV 坐了)(VV 起来))))(PU 。))
+(IP(NP(PN 她))(VP(NP(ADJP(JJ 低))(NP(NN 下头)))(VP(VV 思索)(AS 了)(QP(CD 几)(CLP(M 秒)))))(PU 。))
+1-0-她
+(NP(NR 小芳))
+#31
+(IP(NP(QP(CD 一)(CLP(M 匹)))(DNP(ADJP(JJ 枣红色))(DEG 的))(NP(NN 小马)))(VP(VV 奔跑)(AS 着))(PU 。))
+(IP(NP(PN 它))(VP(ADVP(AD 有时))(ADVP(AD 还))(DVP(VP(VA 调皮))(DEV 地))(VP(VV 打)(NP(NN 响鼻))))(PU 。))
+1-0-它
+(NP(NN 小马))
+#32
+(IP(NP(NR 李明))(VP(VP(VV 喜欢)(NP(DNP(LCP(NP(NN 柜台))(LC 里))(DEG 的))(DP(DT 那)(CLP(M 件)))(NP(NN 衣服))))(PU ，)(VP(VV 希望)(IP(VP(NP(NT 明天))(VP(VV 可以)(VP(VV 穿着)(NP(PN 它))(IP(VP(VV 去)(VP(VV 上学))))))))))(PU 。))
+0-0-它
+(NP(NN 衣服))
+#33
+(IP(NP(QP(CD 一)(CLP(M 只)))(ADJP(JJ 小))(NP(NN 羊)))(VP(PP(P 在)(NP(NN 河边)))(VP(VV 喝水)))(PU 。))
+(IP(IP(NP(DNP(LCP(NP(NN 树丛))(LC 中))(DEG 的))(NP(NN 狼)))(VP(VV 打算)(IP(VP(VV 袭击)(NP(PN 它))))))(PU 。))
+1-0-它
+(NP(QP(CD 一)(CLP(M 只)))(ADJP(JJ 小))(NP(NN 羊)))
+#34
+(IP(IP(NP(NN 狮子))(VP(VV 睡着)(AS 了)))(PU ，)(IP(NP(QP(CD 一)(CLP(M 只)))(NP(NN 老鼠)))(VP(VV 跳到)(AS 了)(NP(NP(PN 它))(NP(NN 身上)))))(PU 。))
+0-0-它
+(NP(NN 狮子))
+#35
+(IP(NP(QP(CD 一)(CLP(M 只)))(NP(NR 海鸥)))(VP(VP(VV 吃)(AS 了)(NP(QP(CD 一)(CLP(M 条)))(DNP(ADJP(ADVP(AD 很))(ADJP(JJ 大)))(DEG 的))(NP(NN 鱼))))(PU ，)(VP(VV 胀破)(AS 了)(NP(DNP(NP(PN 它))(DEG 的))(NP(NN 肚子))))))
+0-0-它
+(NP(NR 海鸥))
+#36
+(IP(NP(NR 乔治))(VP(VV 雕刻)(AS 了)(NP(DNP(NP(QP(CD 一)(CLP(M 个)))(NP(NR 赫耳墨斯)))(DEG 的))(NP(NN 木像))))(PU 。))
+(IP(NP(NR 乔治))(VP(PP(VV 带着)(NP(PN 它)))(VP(VV 去)(AS 了)(NP(NN 市场))))(PU 。))
+1-0-它
+(NP(NN 木像))
+#37
+(IP(NP(NN 渔夫们))(VP(VP(VV 出去)(VP(VV 捕鱼)))(PU ，)(VP(ADVP(AD 辛苦))(VP(VV 劳累)(AS 了)(ADVP(AD 很久))))(PU ，)(VP(ADVP(AD 却))(VP(VV 一无所获))))(PU 。))
+(IP(NP(PN 他们))(VP(ADVP(AD 便))(ADVP(AD 垂头))(DVP(VP(VV 丧气))(DEV 地))(VP(VV 坐在)(LCP(NP(NN 船))(LC 里))))(PU 。))
+1-0-他们
+(NP(NN 渔夫们))
+#38

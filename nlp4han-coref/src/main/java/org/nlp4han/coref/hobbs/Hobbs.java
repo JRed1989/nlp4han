@@ -14,11 +14,30 @@ public class Hobbs
 
 	private Filter filter;
 
+	public Hobbs()
+	{
+
+	}
+
 	public Hobbs(Filter filter)
 	{
 		this.filter = filter;
 	}
 
+	public void setFilter(Filter filter)
+	{
+		this.filter = filter;
+	}
+
+	/**
+	 * HOBBS算法
+	 * 
+	 * @param constituentTrees
+	 *            结构树集合
+	 * @param pronoun
+	 *            代词结点
+	 * @return 先行词结点
+	 */
 	public TreeNode hobbs(List<TreeNode> constituentTrees, TreeNode pronoun)
 	{
 		TreeNode x;
@@ -102,11 +121,10 @@ public class Hobbs
 		boolean flag = false;
 		for (TreeNode treeNode : candidates)
 		{
-			List<TreeNode> tmp = TreeNodeUtil.getNodesUpWithSpecifiedName(treeNode, new String[] { "NP" });
+			List<TreeNode> tmp = TreeNodeUtil.getNodesUpWithSpecifiedName(treeNode, new String[] { "NP", "IP" });
 			for (int i = 0; i < tmp.size(); i++)
 			{
-				if (TreeNodeUtil.isNodeWithSpecifiedName(tmp.get(i), new String[] { "NP", "IP" })
-						&& tmp.get(i).getParent() != null)
+				if (tmp.get(i).getParent() != null)
 				{
 					flag = true;
 					break;

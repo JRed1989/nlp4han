@@ -3,8 +3,6 @@ package org.nlp4han.coref.hobbs;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nlp4han.coref.hobbs.Path.Direction;
-
 import com.lc.nlp4han.constituent.TreeNode;
 
 /**
@@ -28,56 +26,115 @@ public class Path
 		path = new LinkedList<TreeNode>();
 	}
 
+	/**
+	 * 获取路径方向
+	 * 
+	 * @return 路径方向
+	 */
 	public Direction getDirection()
 	{
 		return dir;
 	}
 
+	/**
+	 * 获得路径上的第一个结点
+	 * 
+	 * @return 路径上的第一个结点
+	 */
 	public TreeNode getFirstNode()
 	{
 		return path.get(0);
 	}
 
+	/**
+	 * 获得路径上的最后一个结点
+	 * 
+	 * @return 路径上的最后一个结点
+	 */
 	public TreeNode getLastNode()
 	{
 		return path.get(path.size() - 1);
 	}
 
+	/**
+	 * 获取路径列表
+	 * 
+	 * @return 路径列表
+	 */
 	public List<TreeNode> getPathList()
 	{
 		return path;
 	}
 
+	/**
+	 * 路径是否包含结点treeNode
+	 * 
+	 * @param treeNode
+	 * @return
+	 */
 	public boolean contains(TreeNode treeNode)
 	{
 		return this.path.contains(treeNode);
 	}
 
+	/**
+	 * 获取结点treeNode在路径上的位置
+	 * 
+	 * @param treeNode
+	 * @return
+	 */
 	public int indexOf(TreeNode treeNode)
 	{
 		return this.path.indexOf(treeNode);
 	}
 
+	/**
+	 * 在路径上添加路径结点
+	 * 
+	 * @param pathNode
+	 */
 	public void addPathNode(TreeNode pathNode)
 	{
 		path.add(pathNode);
 	}
 
+	/**
+	 * 获取路径上指定位置的结点
+	 * 
+	 * @param index
+	 * @return
+	 */
 	public TreeNode get(int index)
 	{
 		return path.get(index);
 	}
 
+	/**
+	 * 路径是否为空
+	 * 
+	 * @return
+	 */
 	public boolean isEmpty()
 	{
 		return path.isEmpty();
 	}
 
+	/**
+	 * 路径包含的结点数
+	 * 
+	 * @return
+	 */
 	public int size()
 	{
 		return path.size();
 	}
 
+	/**
+	 * 在指定的位置上添加结点
+	 * 
+	 * @param index
+	 * @param treeNode
+	 */
 	public void addPathNode(int index, TreeNode treeNode)
 	{
 		path.add(index, treeNode);
@@ -127,6 +184,13 @@ public class Path
 
 	}
 
+	/**
+	 * 获取从startNode到endNode间的路径方向
+	 * 
+	 * @param startNode
+	 * @param endNode
+	 * @return
+	 */
 	public static Direction getDirection(TreeNode startNode, TreeNode endNode)
 	{
 		if (startNode != null && endNode != null)
@@ -197,7 +261,17 @@ public class Path
 	@Override
 	public String toString()
 	{
-		return " [" + path + "]";
+		String result = "";
+		if (path.size() > 0)
+		{
+			result += path.get(0).getNodeName();
+			for (int i = 1; i < path.size(); i++)
+			{
+				result += ", ";
+				result += path.get(i).getNodeName();
+			}
+		}
+		return " Path: [" + result + "]  Dir: " + dir;
 	}
 
 	@Override
