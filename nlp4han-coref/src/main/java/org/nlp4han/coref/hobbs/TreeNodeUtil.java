@@ -2,6 +2,7 @@ package org.nlp4han.coref.hobbs;
 
 import java.util.*;
 
+import com.lc.nlp4han.constituent.HeadRule;
 import com.lc.nlp4han.constituent.TreeNode;
 
 /**
@@ -10,9 +11,11 @@ import com.lc.nlp4han.constituent.TreeNode;
  */
 public class TreeNodeUtil
 {
-	private final static String[] POSTAGS = { "AD", "AS", "BA", "CC", "CD", "CS", "DEC", "DEG", "DER", "DEV", "DT",
-			"ETC", "FW", "IJ", "JJ", "LB", "LC", "M", "MSP", "NN", "NR", "NT", "OD", "ON", "P", "PN", "PU", "SB", "SP",
-			"VA", "VC", "VE", "VV" };
+	// private final static String[] POSTAGS = { "AD", "AS", "BA", "CC", "CD", "CS",
+	// "DEC", "DEG", "DER", "DEV", "DT",
+	// "ETC", "FW", "IJ", "JJ", "LB", "LC", "M", "MSP", "NN", "NR", "NT", "OD",
+	// "ON", "P", "PN", "PU", "SB", "SP",
+	// "VA", "VC", "VE", "VV" };
 	// private final static String[] TAGSFORPHRASE = { "ADJP", "ADVP", "CLP", "CP",
 	// "DNP", "DP", "DVP", "FRAG", "IP",
 	// "LCP", "LST", "NP", "PP", "PRN", "QP", "UCP", "VP" };
@@ -287,8 +290,10 @@ public class TreeNodeUtil
 	 */
 	// public static TreeNode getHead(TreeNode nPNode)
 	// {
+	// TreeNode result = null;
+	// List<? extends TreeNode> children = nPNode.getChildren();
 	// int size = nPNode.getChildrenNum();
-	// if (size >1 && nPNode.getLastChild().getNodeName().equals("NP") &&
+	// if (size > 1 && nPNode.getLastChild().getNodeName().equals("NP") &&
 	// nPNode.getChild(size - 2).equals("DNP"))
 	// {
 	// TreeNode np = nPNode.getLastChild();
@@ -297,46 +302,165 @@ public class TreeNodeUtil
 	// else
 	// return getHead(np);
 	// }
-	// else if ()
+	// else if ((result = getFirstNodeFromRightToLeft(children, new String[] { "NN",
+	// "NR", "POS" })) != null)
+	// {
+	// if (result.getNodeName().equals("NP"))
+	// return getHead(result);
+	// return result;
 	// }
-	public static TreeNode getHead(TreeNode nPNode)
+	// else if ((result = getFirstNodeFromLeftToRight(children, new String[] { "NP"
+	// })) != null)
+	// {
+	// return getHead(result);
+	// }
+	// return result;
+	// }
+
+	public static TreeNode getHead(TreeNode nPNode, HashMap<String, List<HeadRule>> NPRules)
 	{
-		if (nPNode == null || !nPNode.getNodeName().equals("NP"))
+		String currNodeName = nPNode.getNodeName();
+		TreeNode result = null;
+		if (NPRules.containsKey(currNodeName))
 		{
-			throw new RuntimeException("NPNode错误！");
-		}
-
-		TreeNode result = nPNode;
-
-		if (nPNode.getChildrenNum() > 1)
-		{
-			List<TreeNode> childrenNodes = (List<TreeNode>) nPNode.getChildren();
-
-			if (isParataxisNP(result))
-				return result;
-			if (allNodeNames(childrenNodes, POSTAGS))
+			for (int k = 0; k < NPRules.get(currNodeName).size(); k++)
 			{
-				if (allNodeNames(childrenNodes, new String[] { "NN", "NR" }) && childrenNodes.size() < 3)
+				if (NPRules.get(currNodeName).get(k).getDirection().equals("right"))
 				{
-					return result;
+					// 用所有的子节点从左向右匹配规则中每一个
+					for (int i = 0; i < NPRules.get(currNodeName).get(k).getRightRulesSize(); i++)
+					{
+						for (int j = 0; j < nPNode.getChildrenNum(); j++)
+						{
+							if (nPNode.getChildName(j).equals(NPRules.get(currNodeName).get(k).getIRightRule(i)))
+							{
+								result = nPNode.getChild(j);
+								if (result.getNodeName().equals("NP"))
+								{
+									return getHead(result, NPRules);
+								}
+								else
+								{
+									return result;
+								}
+							}
+						}
+					}
 				}
-				else
+				else if (NPRules.get(currNodeName).get(k).getDirection().equals("left"))
 				{
-					result = getLastNodeWithSpecifiedName(childrenNodes, new String[] { "NN", "NR" });
-					return result;
+					for (int i = 0; i < NPRules.get(currNodeName).get(k).getRightRulesSize(); i++)
+					{
+						for (int j = nPNode.getChildrenNum() - 1; j >= 0; j--)
+						{
+							if (nPNode.getChildName(j).equals(NPRules.get(currNodeName).get(k).getIRightRule(i)))
+							{
+								result = nPNode.getChild(j);
+								if (result.getNodeName().equals("NP"))
+								{
+									return getHead(result, NPRules);
+								}
+								else
+								{
+									return result;
+								}
+							}
+						}
+					}
 				}
-			}
-			else
-			{
-				result = getLastNodeWithSpecifiedName(childrenNodes, new String[] { "NN", "NR", "NP" });
-				if (result.getNodeName().equals("NP"))
-					result = getHead(result);
-				return result;
 			}
 
 		}
 		return result;
 	}
+
+	private static TreeNode getFirstNodeFromRightToLeft(List<? extends TreeNode> nodes, String[] taggers)
+	{
+		TreeNode result = null;
+		boolean flag = false;
+		if (nodes.size() > 0)
+		{
+			for (String tmp : taggers)
+			{
+				if (tmp.equals("POS"))
+				{
+					flag = true;
+					break;
+				}
+			}
+			for (int i = nodes.size() - 1; i >= 0; i--)
+			{
+				for (String tagger : taggers)
+				{
+					if (flag && i > 0 && nodes.get(i).getNodeName().equals("NP")
+							&& nodes.get(i - 1).getNodeName().equals("DNP"))
+						return nodes.get(i);
+					if (nodes.get(i).getNodeName().equals(tagger))
+						return nodes.get(i);
+				}
+			}
+		}
+		return result;
+	}
+
+	private static TreeNode getFirstNodeFromLeftToRight(List<? extends TreeNode> nodes, String[] taggers)
+	{
+		TreeNode result = null;
+		if (nodes.size() > 0)
+		{
+			for (int i = 0; i < nodes.size(); i++)
+			{
+				for (String tagger : taggers)
+				{
+					if (nodes.get(i).getNodeName().equals(tagger))
+						return nodes.get(i);
+				}
+			}
+		}
+		return result;
+	}
+
+	// public static TreeNode getHead(TreeNode nPNode)
+	// {
+	// if (nPNode == null || !nPNode.getNodeName().equals("NP"))
+	// {
+	// throw new RuntimeException("NPNode错误！");
+	// }
+	//
+	// TreeNode result = nPNode;
+	//
+	// if (nPNode.getChildrenNum() > 1)
+	// {
+	// List<TreeNode> childrenNodes = (List<TreeNode>) nPNode.getChildren();
+	//
+	// if (isParataxisNP(result))
+	// return result;
+	// if (allNodeNames(childrenNodes, POSTAGS))
+	// {
+	// if (allNodeNames(childrenNodes, new String[] { "NN", "NR" }) &&
+	// childrenNodes.size() < 3)
+	// {
+	// return result;
+	// }
+	// else
+	// {
+	// result = getLastNodeWithSpecifiedName(childrenNodes, new String[] { "NN",
+	// "NR" });
+	// return result;
+	// }
+	// }
+	// else
+	// {
+	// result = getLastNodeWithSpecifiedName(childrenNodes, new String[] { "NN",
+	// "NR", "NP" });
+	// if (result.getNodeName().equals("NP"))
+	// result = getHead(result);
+	// return result;
+	// }
+	//
+	// }
+	// return result;
+	// }
 
 	/**
 	 * 是否为并列结构的NP结点
@@ -350,7 +474,7 @@ public class TreeNodeUtil
 		{
 			throw new RuntimeException("NPNode错误！");
 		}
-		List<TreeNode> childrenNodes = (List<TreeNode>) treeNode.getChildren();
+		List<? extends TreeNode> childrenNodes = treeNode.getChildren();
 
 		if (allNodeNames(childrenNodes, new String[] { "NN", "NR", "CC", "PU", "NP" }))
 		{
@@ -374,7 +498,7 @@ public class TreeNodeUtil
 	 *            所有结点名
 	 * @return 若treeNodes中所有结点的结点名都在nodeNames中，则返回true；否则，返回false
 	 */
-	public static boolean allNodeNames(List<TreeNode> treeNodes, String[] nodeNames)
+	public static boolean allNodeNames(List<? extends TreeNode> treeNodes, String[] nodeNames)
 	{
 		if (treeNodes == null || nodeNames == null)
 		{
@@ -399,7 +523,7 @@ public class TreeNodeUtil
 	 * @param nodeName
 	 * @return
 	 */
-	public static boolean hasNodeName(List<TreeNode> treeNodes, String nodeName)
+	public static boolean hasNodeName(List<? extends TreeNode> treeNodes, String nodeName)
 	{
 		if (treeNodes == null || nodeName == null)
 		{

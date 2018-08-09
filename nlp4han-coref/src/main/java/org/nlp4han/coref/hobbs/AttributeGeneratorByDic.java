@@ -87,7 +87,7 @@ public class AttributeGeneratorByDic implements AttributeGenerator
 			}
 			else
 			{
-				TreeNode head = TreeNodeUtil.getHead(treeNode);
+				TreeNode head = TreeNodeUtil.getHead(treeNode, NPHeadRuleSetPTB.getNPRuleSet());
 				Properties genderDic = loadProperties("gender.properties", "utf-8");
 				value = genderDic.getProperty(TreeNodeUtil.getString(head));
 			}
@@ -153,21 +153,21 @@ public class AttributeGeneratorByDic implements AttributeGenerator
 		{
 			if (treeNode.getNodeName().equals("NP"))
 			{
-				TreeNode head = TreeNodeUtil.getHead(treeNode);
+				TreeNode head = TreeNodeUtil.getHead(treeNode, NPHeadRuleSetPTB.getNPRuleSet());
 				String stringOfHead = TreeNodeUtil.getString(head);
 				if (stringOfHead.contains("们"))
 				{
 					result.add(Number.PLURAL);
 					return result;
 				}
-				if (TreeNodeUtil.isParataxisNP(head))
+				if (TreeNodeUtil.isParataxisNP(treeNode))
 				{
 					result.add(Number.PLURAL);
 					return result;
 				}
 			}
 			String stringOfLeafNodes;
-			if (TreeNodeUtil.hasNodeName((List<TreeNode>) treeNode.getChildren(), "DP"))
+			if (TreeNodeUtil.hasNodeName(treeNode.getChildren(), "DP"))
 			{// 含有DP结点，则查表number_DP.properties
 				stringOfLeafNodes = TreeNodeUtil.getString(treeNode);
 				Properties numberDicDP;
@@ -209,11 +209,11 @@ public class AttributeGeneratorByDic implements AttributeGenerator
 				}
 			}
 
-			if (TreeNodeUtil.hasNodeName((List<TreeNode>) treeNode.getChildren(), "QP"))
+			if (TreeNodeUtil.hasNodeName(treeNode.getChildren(), "QP"))
 			{
 				List<TreeNode> qpNodes = TreeNodeUtil.getChildNodeWithSpecifiedName(treeNode, new String[] { "QP" });
 				TreeNode qpNode = qpNodes.get(0);
-				if (TreeNodeUtil.hasNodeName((List<TreeNode>) qpNode.getChildren(), "CD"))
+				if (TreeNodeUtil.hasNodeName(qpNode.getChildren(), "CD"))
 				{
 					List<TreeNode> cdNodes = TreeNodeUtil.getNodesWithSpecified(treeNode, new String[] { "CD" });
 					TreeNode cdNode = cdNodes.get(0);
@@ -250,7 +250,7 @@ public class AttributeGeneratorByDic implements AttributeGenerator
 			}
 			else
 			{
-				TreeNode head = TreeNodeUtil.getHead(treeNode);
+				TreeNode head = TreeNodeUtil.getHead(treeNode, NPHeadRuleSetPTB.getNPRuleSet());
 				Properties animacyDic = loadProperties("animacy.properties", "utf-8");
 				Set<Object> keys = animacyDic.keySet();
 				Iterator<Object> it = keys.iterator();

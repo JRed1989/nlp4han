@@ -106,8 +106,8 @@ public class Evaluation
 			total++;
 			String strOfGoal = TreeNodeUtil.getString(goal);
 			String strOfResult = TreeNodeUtil.getString(result);
-			String headStrOfGoal = TreeNodeUtil.getString(TreeNodeUtil.getHead(goal));
-			String headStrOfResult = TreeNodeUtil.getString(TreeNodeUtil.getHead(result));
+			String headStrOfGoal = TreeNodeUtil.getString(TreeNodeUtil.getHead(goal, NPHeadRuleSetPTB.getNPRuleSet()));
+			String headStrOfResult = TreeNodeUtil.getString(TreeNodeUtil.getHead(result, NPHeadRuleSetPTB.getNPRuleSet()));
 			if (strOfResult.contains(strOfGoal) && headStrOfGoal.equals(headStrOfResult))
 				count++;
 			else
